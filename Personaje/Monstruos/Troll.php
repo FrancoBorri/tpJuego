@@ -36,7 +36,7 @@ class Troll extends Personaje
             if ($this->debilidades[$i] == "Flechas") {
                 foreach ($enemigo->getArsenal() as $arma)
                     if (property_exists(get_class($arma), "flechas")) {
-                        $ataque += $arma->getFechas();
+                        $ataque += $arma->getFlechas();
                     }
             }
             if ($this->debilidades[$i] == "Guerrero") {

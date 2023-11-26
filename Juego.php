@@ -227,50 +227,69 @@ class Juego
     public static function iniciarCombate(): void
     {
         foreach (self::$heroes_jugadores as $index => $jugador) {
-            
-            $monstruo= self::$equipoMonstruos[$index];
+
+            $monstruo = self::$equipoMonstruos[$index];
             echo "Whileeee \n";
             while (!self::verificarVida($monstruo)) {
                 foreach ($jugador as $key => $heroe) {
-                    
-                
+
+
                     $dadoHeroes = self::tirarDado();
                     $dadoMonstruos = self::tirarDado();
-        
+
                     echo "Resultado del dado para monstruos: $dadoMonstruos\n";
                     echo "Resultado del dado para heroes: $dadoHeroes\n";
-                
 
-                    if ($dadoHeroes > $dadoMonstruos ) {
-                        echo "Atacan los heroes!";
+
+                    if ($dadoHeroes > $dadoMonstruos) {
+                        echo "Atacan los heroes!\n";
 
                         $monstruo->defender($heroe);
                         $heroe->defender($monstruo);
+                        echo "la vida del heroe es: " . $heroe->getVida() . "\n";
+                        echo "la vida del monstruo es: " . $monstruo->getVida() . "\n";
 
+                        if (self::verificarVida($monstruo)) {
+                            self::eliminarPersonaje(self::$equipoMonstruos, $index);
+                            echo "\n\nEl monstruo murio \n\n";
+                            break;
+                        } elseif (self::verificarVida($heroe)) {
+                            self::eliminarPersonaje($jugador, $index);
+                            echo "\n\nEl heroe murio \n\n";
+                            break;
+                        }
+                    } elseif ($dadoHeroes < $dadoMonstruos) {
 
-                    }elseif ($dadoHeroes < $dadoMonstruos) {
-                        
                         echo "Atacan los monstruos \n";
 
                         $heroe->defender($monstruo);
                         $monstruo->defender($heroe);
-                        
-                    
-                    }else {
+                        echo "la vida del heroe es: " . $heroe->getVida() . "\n";
+                        echo "la vida del monstruo es: " . $monstruo->getVida() . "\n";
+
+                        if (self::verificarVida($monstruo)) {
+                            self::eliminarPersonaje(self::$equipoMonstruos, $index);
+                            echo "\n\nEl monstruo murio \n\n";
+                            break;
+                        } elseif (self::verificarVida($heroe)) {
+                            self::eliminarPersonaje($jugador, $index);
+                            echo "\n\nEl heroe murio \n\n";
+                            break;
+                        }
+                    } else {
                         echo "Empate, tirar dado de nuevo \n";
                     }
                 }
-                echo "\n\nEl monstruo murio \n\n";
             }
         }
-    }    
+    }
 
 
-        
-            
-            
 
-            
+
+
+
+
 
 
 
@@ -287,14 +306,14 @@ class Juego
     que defendió, si esta es 0 o menor se deberá devolver true en caso 
     que siga con vida o false en caso contrario.
     */
-    private static function verificarVida($monstruo): bool
+    private static function verificarVida($personaje): bool
     {
 
-        $vida= $monstruo->getVida();
+        $vida = $personaje->getVida();
 
-        if ($vida>= 0) {
+        if ($vida >= 0) {
             return false;
-        }else {
+        } else {
             return true;
         }
     }
@@ -303,18 +322,18 @@ class Juego
     despues de verificar la vida del personaje si este fue eliminado, 
     este metodo lo elimina de su lista.
     */
-    private static function eliminarPersonaje(): bool
+    private static function eliminarPersonaje(array $array, int $index): bool
     {
-
-        
-
-
+        print_r($array);
+        unset($array[$index]);
+        print_r($array);
         return true;
     }
 
     //devuelve la cantidad de personajes que quedan en todas las listas
     private static function cant_personajes(): array
     {
+
         return [];
     }
     /* 
